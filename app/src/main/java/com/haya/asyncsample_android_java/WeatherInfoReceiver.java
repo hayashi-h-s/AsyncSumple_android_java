@@ -3,6 +3,9 @@ package com.haya.asyncsample_android_java;
 import android.os.AsyncTask;
 import android.widget.TextView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,7 +30,6 @@ public abstract class WeatherInfoReceiver extends AsyncTask<String, String, Stri
     String result = "";
 
     HttpURLConnection con = null;
-
 
     InputStream is = null;
     try {
@@ -62,6 +64,17 @@ public abstract class WeatherInfoReceiver extends AsyncTask<String, String, Stri
   public void onPostExecute(String result) {
     String telop = "";
     String desc = "";
+    try {
+      JSONObject rootObject = new JSONObject(result);
+      JSONObject description = rootObject.getJSONObject("description");
+      JSONObject forecasts = rootObject.getJSONObject("forecasts");
+
+      JSONObject forecastsNow = forecasts.getJSONObject(0);
+
+      telop = forecastsNow.getString("telop");
+    } catch (JSONException ex) {
+
+    }
 
     tvWeatherTelop.setText(telop);
     tvWeatherDesc.setText(desc);

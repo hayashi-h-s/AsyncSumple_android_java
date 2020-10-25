@@ -2,6 +2,7 @@ package com.haya.asyncsample_android_java;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -71,7 +72,13 @@ public class MainActivity extends AppCompatActivity {
       TextView tvWeatherTelop = findViewById(R.id.tvWeatherTelop);
       TextView tvWeatherDesc = findViewById(R.id.tvWeatherDesc);
 
-      WeatherInfoReceiver receiver = new WeatherInfoReceiver(tvWeatherTelop, tvWeatherDesc);
+      WeatherInfoReceiver receiver = new WeatherInfoReceiver(tvWeatherTelop, tvWeatherDesc) {
+        @SuppressLint("StaticFieldLeak")
+        @Override
+        protected String doInBackground(String... strings) {
+          return null;
+        }
+      };
       receiver.execute(cityId);
 
     }
